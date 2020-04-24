@@ -1,5 +1,7 @@
 package service;
 
+import entity.Boots;
+import entity.Cloth;
 import entity.Product;
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +19,8 @@ public class ProductServiceTest {
         productsList=new ArrayList<Product>();
         productsList.add(new Product(1L,"maslo",4.99,0.25,1));
         productsList.add(new Product(2L,"mleko",2.49,2.0,3));
+        productsList.add(new Boots(5L,"Boots1",199.0,0.25,4,37,true));
+        productsList.add(new Cloth(6L,"T-shirt",48,0.15,4,"S","cotton"));
         productService=new ProductServiceImpl(new ArrayList<Product>(productsList));
     }
 
@@ -35,7 +39,7 @@ public class ProductServiceTest {
     @Test
     public void testCountAllProducts(){
         int result=productService.countAllProducts();
-        assertEquals(2,result);
+        assertEquals(4,result);
     }
 
     @Test
@@ -51,6 +55,12 @@ public class ProductServiceTest {
     }
 
     @Test
+    public void testIsExistBootsByProductNamePositive(){
+        boolean isOnList=productService.isProductExistByProductName("Boots1");
+        assertTrue(isOnList);
+    }
+
+    @Test
     public void testisExistByPorductNameNegative(){
         boolean isNotOnList=productService.isProductExistByProductName("kawa");
         assertNotEquals(true,isNotOnList);
@@ -60,6 +70,12 @@ public class ProductServiceTest {
     public void testisExistByProductIdPositive(){
         boolean isOnList=productService.isProductExistByID(1L);
         assertEquals(true,isOnList);
+    }
+
+    @Test
+    public void testisExistByProductIdForClothPositive(){
+        boolean isOnList=productService.isProductExistByID(6L);
+        assertTrue(isOnList);
     }
 
     @Test
