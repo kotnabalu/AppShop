@@ -1,6 +1,6 @@
 package entity;
 
-public class Boots extends Product {
+public class Boots extends Product implements Separator {
     private int size;
     private boolean isNatutalSkin;
 
@@ -20,9 +20,8 @@ public class Boots extends Product {
 
     @Override
     public String toString() {
-        return super.toString()+"Boots{" +
-                "size=" + size +
-                ", isNatutalSkin=" + isNatutalSkin +
-                '}';
+        return super.toString()+
+                SEPARATOR+size+
+                SEPARATOR+isNatutalSkin;
     }
 }

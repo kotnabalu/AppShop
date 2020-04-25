@@ -1,6 +1,6 @@
 package entity;
 
-public class Cloth extends Product {
+public class Cloth extends Product implements Separator {
     private String size;
     private String material;
 
@@ -20,9 +20,8 @@ public class Cloth extends Product {
 
     @Override
     public String toString() {
-        return super.toString()+ "Cloth{" +
-                "size='" + size + '\'' +
-                ", material='" + material + '\'' +
-                '}';
+        return super.toString()+
+                SEPARATOR+size+
+                SEPARATOR+material;
     }
 }
