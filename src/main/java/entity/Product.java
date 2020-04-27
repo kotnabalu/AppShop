@@ -3,20 +3,22 @@ package entity;
 import java.util.Objects;
 
 public class Product implements Separator {
-
+    public static final char PRODUCT_TYPE='P';
 
     private Long id;
     private String productName;
     private double price;
     private double weight;
     private int productCount;
+    private String color;
 
-    public Product(Long id, String productName, double price, double weight, int productCount) {
+    public Product(Long id, String productName, double price, double weight, int productCount, String color) {
         this.id = id;
         this.productName = productName;
         this.price = price;
         this.weight = weight;
         this.productCount = productCount;
+        this.color = color;
     }
 
     public Long getId() {
@@ -47,13 +49,17 @@ public class Product implements Separator {
         this.productCount = productCount;
     }
 
-    @Override
-    public String toString() {
+    public String getBasicProductString(){
         return id + SEPARATOR +
                 productName + SEPARATOR +
                 price + SEPARATOR +
                 weight + SEPARATOR +
-                productCount;
+                productCount+SEPARATOR+
+                color;
+    }
+    @Override
+    public String toString() {
+        return PRODUCT_TYPE+SEPARATOR+getBasicProductString();
     }
 
     @Override
@@ -65,11 +71,12 @@ public class Product implements Separator {
                 Double.compare(product.weight, weight) == 0 &&
                 productCount == product.productCount &&
                 Objects.equals(id, product.id) &&
-                Objects.equals(productName, product.productName);
+                Objects.equals(productName, product.productName) &&
+                Objects.equals(color, product.color);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, productName, price, weight, productCount);
+        return Objects.hash(id, productName, price, weight, productCount, color);
     }
 }

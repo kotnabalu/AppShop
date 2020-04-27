@@ -8,13 +8,27 @@ import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * package dao symbolize classes that are responsible for relation with database
+ */
 public class ProductDaoImpl implements ProductDao {
-        private final String fileName;
-        private final String productType;
+        private final String FILE_NAME ="product.data";
+        private static ProductDaoImpl instance=null;
 
-    public ProductDaoImpl(String fileName, String productType) {
-        this.fileName = fileName;
-        this.productType = productType;
+    private ProductDaoImpl() {
+        File file=new File(FILE_NAME);
+        try{
+            file.createNewFile();
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static ProductDaoImpl getInstance(){
+        if(instance==null){
+            instance=new ProductDaoImpl();
+        }
+        return instance;
     }
 
     public void saveProduct(Product product) throws IOException {
@@ -26,7 +40,7 @@ public class ProductDaoImpl implements ProductDao {
     public void saveProducts(List<Product> products) throws IOException {
         List <Product> existingProductsInList=getAllProducts();
         existingProductsInList.addAll(products);
-       PrintWriter printWriter=new PrintWriter(fileName);
+       PrintWriter printWriter=new PrintWriter(FILE_NAME);
        for(Product product:existingProductsInList){
            printWriter.write(product.toString());
            printWriter.write(System.lineSeparator());
@@ -42,7 +56,7 @@ public class ProductDaoImpl implements ProductDao {
                 break;
             }
         }
-        clearFile(fileName);
+        clearFile(FILE_NAME);
         saveProducts(existedProducts);
     }
 
@@ -54,16 +68,16 @@ public class ProductDaoImpl implements ProductDao {
                 break;
             }
         }
-        clearFile(fileName);
+        clearFile(FILE_NAME);
         saveProducts(existedProducts);
     }
 
     public List<Product> getAllProducts() throws IOException {
-        List <Product> products=new ArrayList<Product>();
-        BufferedReader bufferedReader=new BufferedReader(new FileReader(this.fileName));
+        List <Product> products= new ArrayList<>();
+        BufferedReader bufferedReader=new BufferedReader(new FileReader(this.FILE_NAME));
         String productStr=bufferedReader.readLine();
         while (productStr!=null){
-            Product product=ProductParser.stringToProduct(productStr,this.productType);
+            Product product=ProductParser.stringToProduct(productStr);
             if(product!=null){
                 products.add(product);
             }

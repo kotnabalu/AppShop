@@ -4,18 +4,28 @@ import api.UserDao;
 import entity.User;
 import entity.parser.UserParser;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
-import java.io.PrintWriter;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
-    private final String FILENAME;
+    private static final String FILENAME="users.data";
+    private static UserDaoImpl instance=null;
 
-    public UserDaoImpl(String FILENAME) {
-        this.FILENAME = FILENAME;
+    private UserDaoImpl() {
+        try{
+            File file=new File(FILENAME);
+            file.createNewFile();
+        }catch (IOException e){
+            System.out.println(e.getMessage());
+        }
+    }
+
+    public static UserDaoImpl getInstance(){
+        if(instance==null){
+            instance=new UserDaoImpl();
+        }
+        return instance;
     }
 
 

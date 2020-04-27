@@ -1,11 +1,13 @@
 package entity;
 
 public class Cloth extends Product implements Separator {
+    public static final char PRODUCT_TYPE='C';
+
     private String size;
     private String material;
 
-    public Cloth(Long id, String productName, double price, double weight, int productCount, String size, String material) {
-        super(id, productName, price, weight, productCount);
+    public Cloth(Long id, String productName, double price, double weight, int productCount, String color, String size, String material) {
+        super(id, productName, price, weight, productCount, color);
         this.size = size;
         this.material = material;
     }
@@ -18,10 +20,9 @@ public class Cloth extends Product implements Separator {
         return material;
     }
 
+
     @Override
     public String toString() {
-        return super.toString()+
-                SEPARATOR+size+
-                SEPARATOR+material;
+        return PRODUCT_TYPE+SEPARATOR+getBasicProductString()+SEPARATOR+size+SEPARATOR+material;
     }
 }

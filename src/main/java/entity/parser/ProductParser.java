@@ -1,6 +1,5 @@
 package entity.parser;
 
-import com.sun.org.apache.bcel.internal.generic.RET;
 import entity.Boots;
 import entity.Cloth;
 import entity.Product;
@@ -8,52 +7,55 @@ import entity.Separator;
 
 
 public class ProductParser implements Separator {
-    public static Product stringToProduct(String productStr, String productType) {
-        if (productType.equals("PRODUCT")) {
-            return convertToProduct(productStr);
-        }
-        if (productType.equals("BOOTS")) {
-            return convertToBoots(productStr);
-        }
-        if (productType.equals("CLOTH")) {
-            return convertToCloth(productStr);
+    public static Product stringToProduct(String productStr) {
+        final char productType=productStr.charAt(0);
+        switch (productType){
+            case Product.PRODUCT_TYPE:
+                return convertToProduct(productStr);
+            case Cloth.PRODUCT_TYPE:
+                return convertToCloth(productStr);
+            case Boots.PRODUCT_TYPE:
+                return convertToBoots(productStr);
         }
         return null;
     }
 
-    protected static Product convertToProduct(String productStr) {
+    private static Product convertToProduct(String productStr) {
         String[] productInfo = productStr.split(SEPARATOR);
-        Long id = Long.parseLong(productInfo[0]);
-        String name = productInfo[1];
-        double price = Double.parseDouble(productInfo[2]);
-        double weight = Double.parseDouble(productInfo[3]);
-        int productCount = Integer.parseInt(productInfo[4]);
-        return new Product(id, name, price, weight, productCount);
+        Long id = Long.parseLong(productInfo[1]);
+        String name = productInfo[2];
+        double price = Double.parseDouble(productInfo[3]);
+        double weight = Double.parseDouble(productInfo[4]);
+        int productCount = Integer.parseInt(productInfo[5]);
+        String productColor=productInfo[6];
+        return new Product(id, name, price, weight, productCount,productColor);
     }
 
-    protected static Boots convertToBoots(String productStr) {
+    private static Boots convertToBoots(String productStr) {
         String[] productInfo = productStr.split(SEPARATOR);
-        Long id = Long.parseLong(productInfo[0]);
-        String name = productInfo[1];
-        double price = Double.parseDouble(productInfo[2]);
-        double weight = Double.parseDouble(productInfo[3]);
-        int productCount = Integer.parseInt(productInfo[4]);
-        int size = Integer.parseInt(productInfo[5]);
-        boolean isNaturalSkin = Boolean.parseBoolean(productInfo[6]);
+        Long id = Long.parseLong(productInfo[1]);
+        String name = productInfo[2];
+        double price = Double.parseDouble(productInfo[3]);
+        double weight = Double.parseDouble(productInfo[4]);
+        int productCount = Integer.parseInt(productInfo[5]);
+        String productColor=productInfo[6];
+        int size = Integer.parseInt(productInfo[7]);
+        boolean isNaturalSkin = Boolean.parseBoolean(productInfo[8]);
 
-        return new Boots(id,name,price,weight,productCount,size,isNaturalSkin);
+        return new Boots(id,name,price,weight,productCount,productColor,size,isNaturalSkin);
     }
 
-    protected static Cloth convertToCloth(String productStr) {
+    private static Cloth convertToCloth(String productStr) {
         String[] productInfo = productStr.split(SEPARATOR);
-        Long id = Long.parseLong(productInfo[0]);
-        String name = productInfo[1];
-        double price = Double.parseDouble(productInfo[2]);
-        double weight = Double.parseDouble(productInfo[3]);
-        int productCount = Integer.parseInt(productInfo[4]);
-        String size=productInfo[5];
-        String material=productInfo[6];
+        Long id = Long.parseLong(productInfo[1]);
+        String name = productInfo[2];
+        double price = Double.parseDouble(productInfo[3]);
+        double weight = Double.parseDouble(productInfo[4]);
+        int productCount = Integer.parseInt(productInfo[5]);
+        String productColor=productInfo[6];
+        String size=productInfo[7];
+        String material=productInfo[8];
 
-        return new Cloth(id,name,price,weight,productCount,size,material);
+        return new Cloth(id,name,price,weight,productCount,productColor,size,material);
     }
 }

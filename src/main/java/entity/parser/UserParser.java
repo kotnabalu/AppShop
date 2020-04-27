@@ -2,7 +2,6 @@ package entity.parser;
 
 import entity.Separator;
 import entity.User;
-import sun.rmi.runtime.Log;
 
 public class UserParser implements Separator {
    public static User stringToUser(String userStr){
