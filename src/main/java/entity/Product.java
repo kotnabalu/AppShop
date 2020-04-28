@@ -1,18 +1,20 @@
 package entity;
 
+import entity.enums.Color;
+import entity.enums.ProductSeparators;
+
 import java.util.Objects;
 
-public class Product implements Separator {
-    public static final char PRODUCT_TYPE='P';
+public class Product  {
 
     private Long id;
     private String productName;
     private double price;
     private double weight;
     private int productCount;
-    private String color;
+    private Color color;
 
-    public Product(Long id, String productName, double price, double weight, int productCount, String color) {
+    public Product(Long id, String productName, double price, double weight, int productCount, Color color) {
         this.id = id;
         this.productName = productName;
         this.price = price;
@@ -41,6 +43,10 @@ public class Product implements Separator {
         return productCount;
     }
 
+    public Color getColor() {
+        return color;
+    }
+
     public void setPrice(double price) {
         this.price = price;
     }
@@ -50,16 +56,17 @@ public class Product implements Separator {
     }
 
     public String getBasicProductString(){
-        return id + SEPARATOR +
-                productName + SEPARATOR +
-                price + SEPARATOR +
-                weight + SEPARATOR +
-                productCount+SEPARATOR+
+        String sep= ProductSeparators.PRODUCT_SEPARATORS.toString();
+        return id + sep +
+                productName + sep +
+                price + sep +
+                weight + sep +
+                productCount+sep+
                 color;
     }
     @Override
     public String toString() {
-        return PRODUCT_TYPE+SEPARATOR+getBasicProductString();
+        return ProductSeparators.PRODUCT_ID.toString()+ProductSeparators.PRODUCT_SEPARATORS.toString()+getBasicProductString();
     }
 
     @Override

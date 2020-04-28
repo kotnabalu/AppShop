@@ -1,8 +1,10 @@
 package entity;
 
+import entity.enums.ProductSeparators;
+
 import java.util.Objects;
 
-public class User implements Separator {
+public class User  {
     private Long id;
     private String login;
     private String password;
@@ -27,8 +29,9 @@ public class User implements Separator {
 
     @Override
     public String toString() {
-        return id+SEPARATOR+
-                login+SEPARATOR+
+        String sep=ProductSeparators.PRODUCT_SEPARATORS.toString();
+        return id+sep+
+                login+sep+
                 password;
     }
 

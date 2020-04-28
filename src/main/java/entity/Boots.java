@@ -1,27 +1,31 @@
 package entity;
 
-public class Boots extends Product implements Separator {
-    public static final char PRODUCT_TYPE = 'B';
+import entity.enums.Color;
+import entity.enums.ProductSeparators;
+import entity.enums.SkinType;
+
+public class Boots extends Product {
 
     private int size;
-    private boolean isNatutalSkin;
+    private SkinType skinType;
 
-    public Boots(Long id, String productName, double price, double weight, int productCount, String color, int size, boolean isNatutalSkin) {
+    public Boots(Long id, String productName, double price, double weight, int productCount, Color color, int size, SkinType skinType) {
         super(id, productName, price, weight, productCount, color);
         this.size = size;
-        this.isNatutalSkin = isNatutalSkin;
+        this.skinType = skinType;
     }
 
     public int getSize() {
         return size;
     }
 
-    public boolean isNatutalSkin() {
-        return isNatutalSkin;
+    public SkinType getSkinType() {
+        return skinType;
     }
 
     @Override
     public String toString() {
-        return PRODUCT_TYPE + SEPARATOR + getBasicProductString() + SEPARATOR + size + SEPARATOR + isNatutalSkin;
+        String sep=ProductSeparators.PRODUCT_SEPARATORS.toString();
+        return ProductSeparators.BOOTS_ID + sep + getBasicProductString() + sep + size + sep + skinType;
     }
 }
