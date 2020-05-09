@@ -15,6 +15,11 @@ public class User  {
         this.password = password;
     }
 
+    public User(String login, String password) {
+        this.login = login;
+        this.password = password;
+    }
+
     public Long getId() {
         return id;
     }
@@ -35,18 +40,17 @@ public class User  {
                 password;
     }
 
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         User user = (User) o;
-        return Objects.equals(id, user.id) &&
-                Objects.equals(login, user.login) &&
-                Objects.equals(password, user.password);
+        return Objects.equals(login, user.login);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id, login, password);
+        return Objects.hash(login);
     }
 }

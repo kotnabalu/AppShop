@@ -8,6 +8,7 @@ import java.util.List;
 /**
  * Interfejs dla klas odpowiedzialnych za relację produktów z bazą danych
  */
+
 public interface ProductDao {
    void saveProduct(Product product) throws IOException;
    void saveProducts(List<Product> products) throws IOException;

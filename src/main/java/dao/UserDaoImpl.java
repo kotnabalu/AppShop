@@ -2,123 +2,187 @@ package dao;
 
 import api.UserDao;
 import entity.User;
-import entity.parser.UserParser;
+import validator.UserValidator;
 
-import java.io.*;
-import java.util.ArrayList;
+import java.sql.*;
+import java.util.LinkedList;
 import java.util.List;
 
 public class UserDaoImpl implements UserDao {
-    private static final String FILENAME="users.data";
-    private static UserDaoImpl instance=null;
+    private String database = "shop";
+    private String tableName = "users";
+    private String user = "root";
+    private String password = "admin";
+    Connection connection;
 
-    private UserDaoImpl() {
-        try{
-            File file=new File(FILENAME);
-            file.createNewFile();
-        }catch (IOException e){
-            System.out.println(e.getMessage());
+    private static UserDaoImpl instance;
+
+
+    public UserDaoImpl() {
+        init();
+    }
+
+    private void init() {
+        try {
+            Class.forName("com.mysql.jdbc.Driver");
+            connection = DriverManager.getConnection("jdbc:mysql://localhost/" + database + "?useSSL=false", user, password);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
-    public static UserDaoImpl getInstance(){
-        if(instance==null){
-            instance=new UserDaoImpl();
+    public static UserDaoImpl getInstance() {
+        if (instance == null) {
+            instance = new UserDaoImpl();
         }
         return instance;
     }
 
-
+    /**
+     * Saves user to database when validated
+     *
+     * @param user
+     */
     @Override
-    public void saveUser(User user) throws IOException {
-        List<User> users=new ArrayList<>();
-        users.add(user);
-        saveUsers(users);
-    }
+    public void saveUser(User user) {
+        PreparedStatement statement = null;
+        UserValidator userValidator = UserValidator.getInstance();
 
-    @Override
-    public void saveUsers(List<User> users) throws IOException {
-        List<User> existedUsers=getAllUsers();
-        existedUsers.addAll(users);
-        PrintWriter printWriter=new PrintWriter(FILENAME);
-        for (User user: existedUsers) {
-          printWriter.write(user.toString());
-          printWriter.write(System.lineSeparator());
+        try {
+            if (userValidator.isValidate(user) && !isUserExist(user.getLogin())) {
+                String query = "insert into " + tableName + " (login, password) values (?,?)";
+                statement = connection.prepareStatement(query);
+                statement.setString(1, user.getLogin());
+                statement.setString(2, user.getPassword());
+                statement.execute();
+                statement.close();
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        printWriter.close();
+
     }
 
+
+    /**
+     * Ok
+     *
+     * @return All users in database
+     */
     @Override
-    public List<User> getAllUsers() throws IOException {
+    public List<User> getAllUsers() {
         // TODO
         // remember to clear the file before saving!
-        List <User> users=new ArrayList<>();
-        BufferedReader bufferedReader=new BufferedReader(new FileReader(FILENAME));
-        String userStr="";
-        while (userStr!=null){
-            userStr=bufferedReader.readLine();
-            if(userStr!=null){
-                User user= UserParser.stringToUser(userStr);
+        List<User> users = new LinkedList<>();
+        Statement statement = null;
+        try {
+            String query = "select * from " + tableName;
+            statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery(query);
+
+            while (resultSet.next()) {
+                Long id = resultSet.getLong("id");
+                String login = resultSet.getString("login");
+                String password = resultSet.getString("password");
+                User user = new User(id, login, password);
                 users.add(user);
             }
+
+            resultSet.close();
+            statement.close();
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-        bufferedReader.close();
 
         return users;
     }
 
+    /**
+     * @param login
+     * @return User
+     */
     @Override
-    public User getUserByLogin(String login) throws IOException {
-        List <User> existedUsers=getAllUsers();
-        for (User user: existedUsers) {
-            if(user.getLogin().equals(login)){
+    public User getUserByLogin(String login) {
+        List<User> existedUsers = getAllUsers();
+        for (User user : existedUsers) {
+            if (user.getLogin().equals(login)) {
                 return user;
             }
         }
         return null;
     }
 
+    /**
+     * @param id
+     * @return User
+     */
     @Override
-    public User getUserById(Long id) throws IOException {
-        List <User> existedUsers=getAllUsers();
-        for (User user: existedUsers) {
-            if(user.getId().equals(id)){
+    public User getUserById(Long id) {
+        List<User> existedUsers = getAllUsers();
+        for (User user : existedUsers) {
+            if (user.getId().equals(id)) {
                 return user;
             }
         }
         return null;
     }
 
-    @Override
-    public void removeUserByLogin(String login) throws IOException {
-        List <User> existingUser=getAllUsers();
-        for (User user:existingUser
-             ) {
-            if(user.getLogin().equals(login)){
-                existingUser.remove(user);
-                break;
-            }
-        }
-        clearFile(FILENAME);
-        saveUsers(existingUser);
-    }
-
-    public void clearFile(String fileName) throws IOException{
-        PrintWriter printWriter=new PrintWriter(fileName);
-        printWriter.close();
-    }
+    /**
+     * Removes User from database by Login
+     * @param login
+     */
 
     @Override
-    public void removeUserById(Long id) throws IOException {
-        List <User> existingUser=getAllUsers();
-        for (User user:existingUser
-        ) {
-            if(user.getId().equals(id)){
-                existingUser.remove(user);
-                break;
+    public void removeUserByLogin(String login) {
+        PreparedStatement statement = null;
+
+        try {
+            String query = "delete from " + tableName + " where login=?";
+            statement = connection.prepareStatement(query);
+
+            statement.setString(1, login);
+            statement.execute();
+
+            statement.close();
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Remove User from database by ID
+     * @param id
+     */
+
+    @Override
+    public void removeUserById(Long id) {
+        PreparedStatement statement;
+        try{
+            String query="delete from "+tableName+" where id='"+id+"'";
+            statement=connection.prepareStatement(query);
+            statement.execute(query);
+            statement.close();
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * Check if user exist in database
+     *
+     * @param login
+     * @return true/false
+     */
+    public boolean isUserExist(String login) {
+        List<User> users = getAllUsers();
+        for (User user : users) {
+            if (user.getLogin().equals(login)) {
+                return true;
             }
         }
-        clearFile(FILENAME);
-        saveUsers(existingUser);
+        return false;
     }
+
+
 }

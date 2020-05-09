@@ -4,7 +4,6 @@ import api.UserRegisterLoginFacade;
 import api.UserService;
 import entity.User;
 import service.UserServiceImpl;
-import validator.UserValidator;
 
 public class UserRegisterLoginFacadeImpl implements UserRegisterLoginFacade {
     UserService userService=UserServiceImpl.getInstance();

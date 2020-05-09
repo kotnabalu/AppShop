@@ -1,13 +1,9 @@
 package validator;
 
-import api.UserDao;
-import dao.UserDaoImpl;
 import entity.User;
-import exception.UserLoginAlreadyExistException;
 import exception.UserShortLenghtLoginException;
 import exception.UserShortLenghtPasswordException;
 
-import java.io.IOException;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -29,20 +25,41 @@ public class UserValidator {
             throw new UserShortLenghtLoginException(user.getLogin() + " - this login is too short.");
         }
 
-        if(!isPasswordLongEnough(user.getPassword())){
+        if(!isPasswordValidated(user.getPassword())){
             throw new UserShortLenghtPasswordException(user.getPassword()+" - password is too short.");
         }
         return true;
     }
 
-    private boolean isPasswordLongEnough(String password) {
-        Pattern pattern=Pattern.compile("[a-zA-Z]{6,}");
+    private boolean isPasswordValidated(String password) {
+        boolean valid=true;
+        if(password.length()<6 || password.length() > 15){
+            return false;
+        }
+        //Password should contain at least one upper case letter
+        Pattern pattern=Pattern.compile(".*[A-Z].*");
         Matcher matcher=pattern.matcher(password);
-        return matcher.matches();
+        if (!matcher.matches()){
+            return false;
+        }
+        //Password should contain at least one lower case letter
+        Pattern pattern1=Pattern.compile(".*[a-z].*");
+        Matcher matcher1=pattern1.matcher(password);
+        if(!matcher1.matches()){
+            return false;
+        }
+        //Password should contain at lease one number
+        Pattern pattern2=Pattern.compile(".*[0-9].*");
+        Matcher matcher2=pattern2.matcher(password);
+        if(!matcher2.matches()){
+            return false;
+        }
+
+        return valid;
     }
 
     private boolean isLoginSizeEnough(String userLogin){
-        Pattern pattern=Pattern.compile("[a-zA-z]{4,}");
+        Pattern pattern=Pattern.compile(".{4,}");
         Matcher matcher=pattern.matcher(userLogin);
         return matcher.matches();
     }

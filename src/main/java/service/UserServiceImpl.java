@@ -50,38 +50,15 @@ public class UserServiceImpl implements UserService {
     }
 
     private boolean isLoginExist(String login){
-     User user=getUserByLogin(login);
-     return user!=null;
+        return userDao.isUserExist(login);
     }
 
     public User getUserByLogin(String login) {
-        List<User> userList;
-        try{
-            userList=getAllUsers();
-        for (User user : userList) {
-            boolean isFound = user.getLogin().equals(login);
-            if (isFound) {
-                return user;
-            }
-        }
-        }catch (IOException e){
-            e.printStackTrace();
-        }
-        return null;
+        return userDao.getUserByLogin(login);
     }
 
-    public User getUserById(Long id) throws IOException {
-        List <User> userList;
-
-            userList=getAllUsers();
-            for (User user:userList){
-                boolean isFound=user.getId().equals(id);
-                if(isFound){
-                    return user;
-                }
-            }
-
-        return null;
+    public User getUserById(Long id) {
+       return userDao.getUserById(id);
     }
 
     public boolean isUserPasswordValidWithLogin(String login,String password){

@@ -1,6 +1,9 @@
 package api;
 
 import entity.User;
+import exception.UserLoginAlreadyExistException;
+import exception.UserShortLenghtLoginException;
+import exception.UserShortLenghtPasswordException;
 
 import java.io.IOException;
 import java.util.List;
@@ -8,18 +11,19 @@ import java.util.List;
  * Interfejs dla klas odpowiedzialnych za relację userów z bazą danych
  */
 public interface UserDao {
-    void saveUser(User user) throws IOException;
+    void saveUser(User user) ;
 
-    void saveUsers(List<User> users) throws IOException;
+    List<User> getAllUsers();
 
-    List<User> getAllUsers() throws IOException;
+    User getUserByLogin(String login);
 
-    User getUserByLogin(String login) throws IOException;
+    User getUserById(Long id);
 
-    User getUserById(Long id) throws IOException;
+    void removeUserByLogin(String login);
 
-    void removeUserByLogin(String login) throws IOException;
+    void removeUserById(Long id);
 
-    void removeUserById(Long id) throws IOException;
+    boolean isUserExist(String login);
+
 
 }

@@ -1,7 +1,5 @@
 package entity.parser;
 
-import com.sun.org.apache.bcel.internal.generic.RETURN;
-import com.sun.org.apache.regexp.internal.RE;
 import entity.enums.Color;
 
 public class ColorParser {

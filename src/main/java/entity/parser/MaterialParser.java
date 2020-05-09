@@ -1,6 +1,5 @@
 package entity.parser;
 
-import com.sun.org.apache.regexp.internal.RE;
 import entity.enums.Material;
 
 public class MaterialParser {
