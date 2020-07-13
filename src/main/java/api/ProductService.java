@@ -15,5 +15,10 @@ public interface ProductService {
 
     boolean saveProduct(Product product);
 
+    List <Product> getProductsByUserId(Long userId);
+
+    boolean removeProductByNameAndUserId(String productNAme, Long usrId);
+
+
 
 }

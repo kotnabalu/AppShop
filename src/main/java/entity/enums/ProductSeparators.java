@@ -1,5 +1,7 @@
 package entity.enums;
 
+
+@Deprecated
 public enum ProductSeparators {
     PRODUCT_SEPARATORS("#"),
     PRODUCT_ID("P"),

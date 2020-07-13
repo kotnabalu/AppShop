@@ -1,7 +1,6 @@
 package entity;
 
 import entity.enums.Color;
-import entity.enums.ProductSeparators;
 
 import java.util.Objects;
 
@@ -13,6 +12,7 @@ public class Product  {
     private double weight;
     private int productCount;
     private Color color;
+    private long user_id;
 
     public Product(Long id, String productName, double price, double weight, int productCount, Color color) {
         this.id = id;
@@ -21,6 +21,26 @@ public class Product  {
         this.weight = weight;
         this.productCount = productCount;
         this.color = color;
+    }
+
+    public Product(Long id, String productName, double price, double weight, int productCount, Color color, long user_id) {
+        this.id = id;
+        this.productName = productName;
+        this.price = price;
+        this.weight = weight;
+        this.productCount = productCount;
+        this.color = color;
+        this.user_id= user_id;
+    }
+
+    public void setUser_id(long user_id) {
+        this.user_id = user_id;
+    }
+
+
+
+    public long getUser_id() {
+        return user_id;
     }
 
     public Long getId() {
@@ -55,18 +75,19 @@ public class Product  {
         this.productCount = productCount;
     }
 
-    public String getBasicProductString(){
-        String sep= ProductSeparators.PRODUCT_SEPARATORS.toString();
-        return id + sep +
-                productName + sep +
-                price + sep +
-                weight + sep +
-                productCount+sep+
-                color;
-    }
+
+
     @Override
     public String toString() {
-        return ProductSeparators.PRODUCT_ID.toString()+ProductSeparators.PRODUCT_SEPARATORS.toString()+getBasicProductString();
+        return "Product{" +
+                "id=" + id +
+                ", productName='" + productName + '\'' +
+                ", price=" + price +
+                ", weight=" + weight +
+                ", productCount=" + productCount +
+                ", color=" + color +
+                ", user_id=" + user_id +
+                '}';
     }
 
     @Override

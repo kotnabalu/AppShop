@@ -1,6 +1,5 @@
 package entity;
 
-import entity.enums.ProductSeparators;
 
 import java.util.Objects;
 
@@ -34,12 +33,12 @@ public class User  {
 
     @Override
     public String toString() {
-        String sep=ProductSeparators.PRODUCT_SEPARATORS.toString();
-        return id+sep+
-                login+sep+
-                password;
+        return "User{" +
+                "id=" + id +
+                ", login='" + login + '\'' +
+                ", password='" + password + '\'' +
+                '}';
     }
-
 
     @Override
     public boolean equals(Object o) {

@@ -3,6 +3,7 @@ package entity.parser;
 import entity.User;
 import entity.enums.ProductSeparators;
 
+@Deprecated
 public class UserParser {
    public static User stringToUser(String userStr){
         String [] userInfo=userStr.split(ProductSeparators.PRODUCT_SEPARATORS.toString());

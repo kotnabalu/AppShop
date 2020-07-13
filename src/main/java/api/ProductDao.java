@@ -11,10 +11,9 @@ import java.util.List;
 
 public interface ProductDao {
    void saveProduct(Product product) throws IOException;
-   void saveProducts(List<Product> products) throws IOException;
-    void removeProductById(Long productId) throws IOException;
-    void removeProductsByName(String productName) throws IOException;
+    void removeProductsByName(String productName, Long userId) throws IOException;
     List <Product> getAllProducts() throws IOException;
     Product getProductById(Long Id) throws IOException;
     Product getProductByName(String productName) throws IOException;
+    List <Product> getProductsByUserId(Long id) throws IOException;
 }

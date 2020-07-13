@@ -11,7 +11,8 @@ import java.util.List;
 
 public class ProductServiceImpl implements ProductService {
     private static ProductServiceImpl instance=null;
-    private ProductDao productDao=ProductDaoImpl.getInstance();
+    private ProductDao productDao= ProductDaoImpl.getInstance();
+//    private ProductDao productDao= ProductDaoImplDep.getInstance();
 
     private ProductServiceImpl() {
 
@@ -28,7 +29,7 @@ public class ProductServiceImpl implements ProductService {
     }
 
     public int countAllProducts() throws IOException {
-        return productDao.getAllProducts().size();
+        return getAllProducts().size();
     }
 
     public boolean isProductExistByProductName(String productNameStr) {
@@ -88,5 +89,27 @@ public class ProductServiceImpl implements ProductService {
         return false;
 
     }
+
+    @Override
+    public List<Product> getProductsByUserId(Long userId){
+        try {
+            return productDao.getProductsByUserId(userId);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    @Override
+    public boolean removeProductByNameAndUserId(String productNAme, Long usrId) {
+        try{
+            productDao.removeProductsByName(productNAme,usrId);
+            return true;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return false;
+    }
+
 
 }

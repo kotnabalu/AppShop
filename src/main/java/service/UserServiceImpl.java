@@ -5,6 +5,8 @@ import api.UserService;
 import dao.UserDaoImpl;
 import entity.User;
 import exception.UserLoginAlreadyExistException;
+import exception.UserShortLenghtLoginException;
+import exception.UserShortLenghtPasswordException;
 import validator.UserValidator;
 
 import java.io.IOException;
@@ -30,7 +32,7 @@ public class UserServiceImpl implements UserService {
         return userDao.getAllUsers();
     }
 
-    public boolean addUser(User user)   {
+    public boolean addUser(User user) throws UserLoginAlreadyExistException, UserShortLenghtPasswordException, UserShortLenghtLoginException {
         try{
             if(isLoginExist(user.getLogin()))
                 throw new UserLoginAlreadyExistException();

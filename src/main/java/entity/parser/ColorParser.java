@@ -5,22 +5,22 @@ import entity.enums.Color;
 public class ColorParser {
         public static Color colorParser(String colorStr){
             String color=colorStr.toUpperCase();
-            if(color.equals("RED")){
+            if(color.equalsIgnoreCase("RED")){
                 return Color.RED;
             }
-            if(color.equals("GREEN")){
+            if(color.equalsIgnoreCase("GREEN")){
                 return Color.GREEN;
             }
-            if(color.equals("BLUE")){
+            if(color.equalsIgnoreCase("BLUE")){
                 return Color.BLUE;
             }
-            if(color.equals("BLACK")){
+            if(color.equalsIgnoreCase("BLACK")){
                 return Color.BLACK;
             }
-            if(color.equals("YELLOW")){
+            if(color.equalsIgnoreCase("YELLOW")){
                 return Color.YELLOW;
             }
-            if(color.equals("WHITE")){
+            if(color.equalsIgnoreCase("WHITE")){
                 return Color.WHITE;
             }
             return Color.WHITE;
